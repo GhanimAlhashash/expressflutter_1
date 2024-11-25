@@ -1,7 +1,11 @@
+import 'package:expressflutter_1/main.dart';
+import 'package:expressflutter_1/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 
 class Recipe {
@@ -60,21 +64,22 @@ class HomePage extends StatelessWidget {
               title: const Text("Logout"),
               trailing: const Icon(Icons.logout),
               onTap: () {
-                // Dummy logout action
+                Provider.of<AuthProvider>(context, listen: false).logout();
+              context.go("/");
               },
             ),
             ListTile(
               title: const Text("Sign in"),
               trailing: const Icon(Icons.login),
               onTap: () {
-                // Dummy sign in action
+                context.push('/signin');
               },
             ),
             ListTile(
               title: const Text("Sign up"),
               trailing: const Icon(Icons.how_to_reg),
               onTap: () {
-                // Dummy sign up action
+                context.push('/signup');
               },
             ),
           ],
