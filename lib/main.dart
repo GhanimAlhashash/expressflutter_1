@@ -1,29 +1,37 @@
-import 'package:expressflutter_1/widgets/add_form.dart';
+import 'package:expressflutter_1/pages/home.dart';
+import 'package:expressflutter_1/pages/login.dart';
+import 'package:expressflutter_1/pages/register.dart';
+import 'package:expressflutter_1/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        // ChangeNotifierProvider<PetsProvider>(create: (_) => PetsProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
+      // GoRoute(
+      //   path: '/',
+      //   builder: (context, state) => const HomePage(),
+      // ),
+
       GoRoute(
-        path: '/',
-        builder: (context, state) => HomePage(),
+        path: '/signup',
+        builder: (context, state) => RegisterPage(),
       ),
       GoRoute(
-        path: '/second',
-        builder: (context, state) => SecondPage(),
-      ),
-      GoRoute(
-        path: '/profile',
-        builder: (context, state) => ProfilePage(),
-      ),
-      GoRoute(
-        path: '/profile',
-        builder: (context, state) => AddRecipeForm(),
+        path: '/signin',
+        builder: (context, state) => LoginPage(),
       ),
         ],
       );
