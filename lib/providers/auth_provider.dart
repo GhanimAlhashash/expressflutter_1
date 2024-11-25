@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import 'dart:io';
 
 import 'package:expressflutter_1/model/User.dart';
@@ -83,3 +85,4 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+>>>>>>> master

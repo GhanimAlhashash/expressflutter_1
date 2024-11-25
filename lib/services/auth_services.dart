@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import 'package:expressflutter_1/model/User.dart';
 import 'package:expressflutter_1/services/client.dart';
 
@@ -18,3 +20,4 @@ Future<User> loginApi(String email, String password) async {
 
   return User.fromjson(response.data['data']);
 }
+>>>>>>> master
