@@ -1,64 +1,109 @@
-import 'package:adopt_app/pages/add_page.dart';
-import 'package:adopt_app/pages/home_page.dart';
-import 'package:adopt_app/pages/signin_page.dart';
-import 'package:adopt_app/pages/signup_page.dart';
-import 'package:adopt_app/pages/update_page.dart';
-import 'package:adopt_app/providers/auth_provider.dart';
-import 'package:adopt_app/providers/pets_provider.dart';
-import 'package:expressflutter_1/pages/home.dart';
-import 'package:expressflutter_1/pages/login.dart';
-import 'package:expressflutter_1/pages/register.dart';
+import 'package:expressflutter_1/widgets/add_form.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<PetsProvider>(create: (_) => PetsProvider()),
-        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router,
-    );
-  }
-
-  final _router = GoRouter(
+  final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomePage(),
-      ),
-      // GoRoute(
-      //   path: '/add',
-      //   builder: (context, state) => AddPage*(),
-      // ),
-      GoRoute(
-        path: '/signup',
-        builder: (context, state) => SignupPage(),
+        builder: (context, state) => HomePage(),
       ),
       GoRoute(
-        path: '/signin',
-        builder: (context, state) => SigninPage(),
+        path: '/second',
+        builder: (context, state) => SecondPage(),
       ),
-      // GoRoute(
-      //   path: '/update/:recipeId',
-      //   builder: (context, state) {
-      //     final recipe = Provider.of<RecipesProvider>(context).recipes.firstWhere(
-      //         (recipe) => recipe.id.toString() == (state.pathParameters['recipeId']!));
-      //     return UpdatePage(recipe: recipe);
-      //   },
-      // ),
-    ],
-  );
-}
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => ProfilePage(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => AddRecipeForm(),
+      ),
+        ],
+      );
+
+      @override
+      Widget build(BuildContext context) {
+        return MaterialApp.router(
+      routerConfig: _router,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+        );
+      }
+    }
+
+    class HomePage extends StatelessWidget {
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+        ElevatedButton(
+          onPressed: () {
+            context.go('/second');
+          },
+          child: Text('Go to Second Page'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            context.go('/profile');
+          },
+          child: Text('Go to Profile Page'),
+        ),
+          ],
+        ),
+      ),
+        );
+      }
+    }
+
+    class SecondPage extends StatelessWidget {
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+        context.go('/');
+          },
+          child: Text('Go to Home Page'),
+        ),
+      ),
+        );
+      }
+    }
+
+    class ProfilePage extends StatelessWidget {
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+        context.go('/');
+          },
+          child: Text('Go to Home Page'),
+        ),
+      ),
+        );
+      }
+    }
