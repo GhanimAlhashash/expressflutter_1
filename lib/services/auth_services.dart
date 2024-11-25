@@ -1,30 +1,20 @@
-import 'package:adopt_app/models/user.dart';
-import 'package:adopt_app/services/client_services.dart';
-import 'package:dio/dio.dart';
+import 'package:expressflutter_1/model/User.dart';
+import 'package:expressflutter_1/services/client.dart';
 
-class AuthServices {
-  final _baseUrl = 'https://coded-pets-api-auth.eapi.joincoded.com';
+Future<User> signupAPI(String email, String password) async {
+  var response = await dio.post("/signup", data: {
+    "email": email,
+    "password": password,
+  });
 
-  Future<String> signup({required User user}) async {
-    late String token;
-    try {
-      Response response = await Client.dio.post('/signup', data: user.toJson());
+  return User.fromjson(response.data['data']);
+}
 
-      token = response.data["token"];
-    } on DioError catch (error) {
-      print(error);
-    }
-    return token;
-  }
+Future<User> loginApi(String email, String password) async {
+  var response = await dio.post("/login", data: {
+    "email": email,
+    "password": password,
+  });
 
-  Future<String> signin({required User user}) async {
-    try {
-      Response response = await Client.dio.post('/signin', data: user.toJson());
-
-      return response.data["token"];
-    } on DioError catch (error) {
-      print(error);
-    }
-    throw "an eroror occored";
-  }
+  return User.fromjson(response.data['data']);
 }
