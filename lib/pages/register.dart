@@ -1,13 +1,11 @@
-import 'package:adopt_app/models/user.dart';
-import 'package:adopt_app/providers/auth_provider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
-class SignupPage extends StatelessWidget {
-  SignupPage({Key? key}) : super(key: key);
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +19,29 @@ class SignupPage extends StatelessWidget {
         child: Column(
           children: [
             const Text("Sign Up"),
-            TextField(
-              decoration: const InputDecoration(hintText: 'Username'),
+            TextFormField(
+              decoration: const InputDecoration(hintText: 'Email'),
               controller: usernameController,
+              validator: (value) =>
+                  value!.isEmpty ? 'Please enter a username' : null,
             ),
-            TextField(
+            TextFormField(
               decoration: const InputDecoration(hintText: 'Password'),
               controller: passwordController,
               obscureText: true,
+              validator: (value) =>
+                  value!.isEmpty ? 'Please enter a password' : null,
             ),
             ElevatedButton(
-              onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false).signup(
-                    user: User(
-                        username: usernameController.text,
-                        password: passwordController.text));
-                context.pop();
+              onPressed: () async {
+                try {} on DioException catch (e) {
+                  if (e.response == null) return;
+                  if (e.response!.data == null) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          e.response!.data['message'] ?? "Unexpected error")));
+                }
               },
               child: const Text("Sign Up"),
             )
