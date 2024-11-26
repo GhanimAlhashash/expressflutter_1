@@ -1,16 +1,16 @@
 class User {
   String username;
-  String token;
+  String password;
   User({
     required this.username,
-    required this.token,
+    required this.password,
   });
 
   User.fromjson(dynamic json)
       : username = json["username"],
-        token = json["token"];
+        password = json["password"];
 
   Map<String, dynamic> toJson() {
-    return {"username": username, "token": token};
+    return {"username": username, "password": password};
   }
 }
