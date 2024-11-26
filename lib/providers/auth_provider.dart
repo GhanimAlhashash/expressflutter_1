@@ -13,8 +13,8 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isUserLoggedInBefore => _isUserLoggedInBefore;
 
-  Future<void> signup({required String email, required String password}) async {
-    user = await signupAPI(email, password);
+  Future<void> signup({required String username, required String password}) async {
+    user = await signupAPI(username, password);
 
     notifyListeners();
 
@@ -46,8 +46,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> login({required String email, required String password}) async {
-    user = await loginApi(email, password);
+  Future<void> login({required String username, required String password}) async {
+    user = await loginApi(username, password);
 
     notifyListeners();
 

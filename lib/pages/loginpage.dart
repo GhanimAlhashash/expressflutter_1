@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("login "),
+            const Text(""),
             TextFormField(
               decoration: const InputDecoration(hintText: 'Email'),
               controller: usernameController,

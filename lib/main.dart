@@ -1,8 +1,11 @@
 
 import 'package:expressflutter_1/pages/homepage.dart';
 import 'package:expressflutter_1/pages/loginpage.dart';
+
+import 'package:expressflutter_1/pages/profilepage.dart';
 import 'package:expressflutter_1/pages/registerpage.dart';
 import 'package:expressflutter_1/providers/auth_provider.dart';
+import 'package:expressflutter_1/widgets/add_form.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +38,15 @@ class MyApp extends StatelessWidget {
         path: '/signin',
         builder: (context, state) => LoginPage(),
       ),
+      GoRoute(
+        path: '/add-recipe',
+        builder: (context, state) => AddRecipeForm(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => ProfilePage(),
+      ),//'/add-recipe'
+      
         ],
       );
 

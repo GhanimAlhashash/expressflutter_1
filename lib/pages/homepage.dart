@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:expressflutter_1/main.dart';
 import 'package:expressflutter_1/providers/auth_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
+import 'package:flutter/rendering.dart';
 
 class Recipe {
   final String name;
@@ -33,8 +33,16 @@ Future<List<Recipe>> fetchRecipesFromApi() async {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String searchQuery = '';
+  String selectedCategory = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              // Dummy profile action
+              context.push('/profile');
             },
           ),
         ],
@@ -65,7 +73,7 @@ class HomePage extends StatelessWidget {
               trailing: const Icon(Icons.logout),
               onTap: () {
                 Provider.of<AuthProvider>(context, listen: false).logout();
-              context.go("/");
+                context.go("/");
               },
             ),
             ListTile(
@@ -93,14 +101,38 @@ class HomePage extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Dummy add recipe action
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Text("Add a new Recipe"),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search recipes...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    value: selectedCategory,
+                    isExpanded: true,
+                    items: <String>['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert']
+                        .map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCategory = value!;
+                      });
+                    },
                   ),
                 ),
                 FutureBuilder(
@@ -115,7 +147,11 @@ class HomePage extends StatelessWidget {
                         child: Text('An error occurred'),
                       );
                     } else if (snapshot.hasData) {
-                      final recipes = snapshot.data!;
+                      final recipes = snapshot.data!
+                          .where((recipe) =>
+                              recipe.name.toLowerCase().contains(searchQuery.toLowerCase()) &&
+                              (selectedCategory == 'All' || recipe.name.contains(selectedCategory)))
+                          .toList();
                       return GridView.builder(
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -153,17 +189,14 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Dummy add recipe action
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/add-recipe');
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.blue,
       ),
     );
   }

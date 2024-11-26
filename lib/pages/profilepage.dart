@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
 
-class ProfilePage extends StatelessWidget {
+class _ProfilePageState extends State<ProfilePage> {
+  bool isEditing = false;
+  TextEditingController nameController = TextEditingController(text: 'John Doe');
+  TextEditingController emailController = TextEditingController(text: 'johndoe@example.com');
+  TextEditingController phoneController = TextEditingController(text: '+1234567890');
+  TextEditingController addressController = TextEditingController(text: '123, Dummy Street, Dummy City, Dummy Country');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,32 +29,54 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Name: John Doe',
-              style: TextStyle(fontSize: 18),
-            ),
+            isEditing
+                ? TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(labelText: 'Name'),
+                  )
+                : Text(
+                    'Name: ${nameController.text}',
+                    style: TextStyle(fontSize: 18),
+                  ),
             SizedBox(height: 10),
-            Text(
-              'Email: johndoe@example.com',
-              style: TextStyle(fontSize: 18),
-            ),
+            isEditing
+                ? TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(labelText: 'Email'),
+                  )
+                : Text(
+                    'Email: ${emailController.text}',
+                    style: TextStyle(fontSize: 18),
+                  ),
             SizedBox(height: 10),
-            Text(
-              'Phone: +1234567890',
-              style: TextStyle(fontSize: 18),
-            ),
+            isEditing
+                ? TextField(
+                    controller: phoneController,
+                    decoration: InputDecoration(labelText: 'Phone'),
+                  )
+                : Text(
+                    'Phone: ${phoneController.text}',
+                    style: TextStyle(fontSize: 18),
+                  ),
             SizedBox(height: 10),
-            Text(
-              'Address: 123, Dummy Street, Dummy City, Dummy Country',
-              style: TextStyle(fontSize: 18),
-            ),
+            isEditing
+                ? TextField(
+                    controller: addressController,
+                    decoration: InputDecoration(labelText: 'Address'),
+                  )
+                : Text(
+                    'Address: ${addressController.text}',
+                    style: TextStyle(fontSize: 18),
+                  ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  setState(() {
+                    isEditing = !isEditing;
+                  });
                 },
-                child: Text('Edit Profile'),
+                child: Text(isEditing ? 'Confirm' : 'Edit Profile'),
               ),
             ),
           ],
