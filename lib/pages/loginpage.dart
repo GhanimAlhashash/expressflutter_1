@@ -50,7 +50,25 @@ class _LoginPageState extends State<LoginPage> {
                   value!.isEmpty ? 'Please enter a password' : null,
             ),
             ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                try {
+                  // wait for authentication
+                  await context.read<AuthProvider>().login(
+                      username: usernameController.text,
+                      password: passwordController.text);
+
+                  var user = context.read<AuthProvider>().user;
+                  print("You are logged in as ${user!.username}");
+                  context.pop();
+                } on DioException catch (e) {
+                  if (e.response == null) return;
+                  if (e.response!.data == null) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          e.response!.data['message'] ?? "Unexpected error")));
+                }
+              },
               child: const Text("login"),
             ),
           ],

@@ -1,4 +1,3 @@
-
 import 'package:expressflutter_1/pages/homepage.dart';
 import 'package:expressflutter_1/pages/loginpage.dart';
 
@@ -45,21 +44,18 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/profile',
         builder: (context, state) => ProfilePage(),
-      ),//'/add-recipe'
-      
-        ],
-      );
+      ), //'/add-recipe'
+    ],
+  );
 
-      @override
-      Widget build(BuildContext context) {
-        return MaterialApp.router(
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
       routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-        );
-      }
-    }
-
-   
+    );
+  }
+}

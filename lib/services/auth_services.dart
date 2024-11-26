@@ -1,9 +1,8 @@
-
 import 'package:expressflutter_1/model/User.dart';
 import 'package:expressflutter_1/services/client.dart';
 
 Future<User> signupAPI(String username, String password) async {
-  var response = await dio.post("/signup", data: {
+  var response = await dio.post("/auth/signup", data: {
     "username": username,
     "password": password,
   });
@@ -12,7 +11,7 @@ Future<User> signupAPI(String username, String password) async {
 }
 
 Future<User> loginApi(String username, String password) async {
-  var response = await dio.post("/login", data: {
+  var response = await dio.post("/auth/signin", data: {
     "username": username,
     "password": password,
   });

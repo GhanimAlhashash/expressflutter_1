@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
 
-const _baseUrl = 'http://167.71.7.159/api/burgan-app/';
+const _baseUrl = 'http://localhost:8000';
 
 final Dio dio = Dio(BaseOptions(baseUrl: _baseUrl));

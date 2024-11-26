@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:expressflutter_1/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -34,7 +37,17 @@ class RegisterPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                try {} on DioException catch (e) {
+                try {
+                  // wait for authentication
+                  await context.read<AuthProvider>().signup(
+                      username: usernameController.text,
+                      password: passwordController.text);
+
+                  var user = context.read<AuthProvider>().user;
+                  print("You are logged in as ${user!.username}");
+
+                  context.go('/');
+                } on DioException catch (e) {
                   if (e.response == null) return;
                   if (e.response!.data == null) return;
 
