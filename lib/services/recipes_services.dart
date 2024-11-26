@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:expressflutter_1/model/recipes.dart';
 import 'package:expressflutter_1/services/client.dart';
 
@@ -8,15 +9,27 @@ class RecipesServices {
     return recipesJson.map(Recipes.fromjson).toList();
   }
 
-  static Future<Recipes> createAccount(String name, String description,
-      String image, String category, String ingredients, String author) async {
+  Future<List<Recipes>> getRecipes() async {
+    List<Recipes> recipes = [];
+    try {
+      Response response = await Client.dio.get('/recipe');
+      recipes = (response.data as List).map((recipe) => Recipes.fromjson(recipe)).toList();
+    } on DioError catch (error) {
+      print(error);
+    }
+    return recipes;
+  }
+
+  static Future<Recipes> createRecipe(String name, String description,
+      String image, String category, String ingredients, String author, String id) async {
     var response = await Client.dio.post('/recipe', data: {
       "name": name,
       "description": description,
       "image": image,
       "category": category,
       "ingredients": ingredients,
-      "author": author
+      "author": author,
+      "id": id
     });
     var recipesJson = response.data['data'];
     return Recipes.fromjson(recipesJson);

@@ -34,7 +34,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> initAuth() async {
-    await _getToken();
+    await getToken();
     if (isAuth()) {
       Client.dio.options.headers = {
         HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -52,7 +52,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _getToken() async {
+  Future<void> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var username = prefs.getString("username");
     var token = prefs.getString("token");

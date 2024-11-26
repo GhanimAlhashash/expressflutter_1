@@ -1,4 +1,5 @@
 class Recipes {
+  String id;
   String name;
   String description;
   String author;
@@ -6,6 +7,7 @@ class Recipes {
   String image;
 
   Recipes({
+    required this.id,
     required this.name,
     required this.description,
     required this.author,
@@ -14,7 +16,9 @@ class Recipes {
   });
 
   Recipes.fromjson(dynamic json)
-      : name = json["name"],
+      : 
+        id = json["_id"],
+        name = json["name"],
         description = json["description"],
         author = json["author"],
         category = json["category"],
@@ -22,6 +26,7 @@ class Recipes {
 
   Map<String, dynamic> toJson() {
     return {
+      "_id": id,  
       "name": name,
       "description": description,
       "author": author,
