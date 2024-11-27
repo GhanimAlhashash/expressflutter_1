@@ -4,6 +4,7 @@ import 'package:expressflutter_1/pages/loginpage.dart';
 import 'package:expressflutter_1/pages/profilepage.dart';
 import 'package:expressflutter_1/pages/registerpage.dart';
 import 'package:expressflutter_1/providers/auth_provider.dart';
+import 'package:expressflutter_1/providers/category_provider.dart';
 import 'package:expressflutter_1/providers/recipes_provider.dart';
 import 'package:expressflutter_1/widgets/add_form.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ void main() {
         ChangeNotifierProvider<RecipesProvider>(
             create: (_) => RecipesProvider()),
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<CategoryProvider>(create: (_) => CategoryProvider()),
       ],
       child: MyApp(),
     ),

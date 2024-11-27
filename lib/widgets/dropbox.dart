@@ -19,7 +19,7 @@ class _DropBoxState extends State<DropBox> {
     // Simulate fetching data from backend
     await Future.delayed(Duration(seconds: 2));
     setState(() {
-      _items = ['Item 1', 'Item 2', 'Item 3']; // Replace with actual data from backend
+      _items = ['kuwaiti']; // Replace with actual data from backend
     });
   }
 

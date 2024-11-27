@@ -1,4 +1,6 @@
+import 'package:expressflutter_1/providers/category_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddRecipeForm extends StatefulWidget {
   @override
@@ -26,32 +28,55 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                value: _selectedCategory.isNotEmpty ? _selectedCategory : null,
-                items: _categories.map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
+              FutureBuilder(
+              future: Provider.of<CategoryProvider>(context, listen: false).getCategories(),
+              builder: (context, dataSnapshot) {
+                if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value as String;
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a category';
+                } else {
+                  if (dataSnapshot.error != null) {
+                    return const Center(
+                      child: Text('An error occurred'),
+                    );
+                  } else {
+                    return Consumer<CategoryProvider>(
+                      builder: (context, categoryProvider, child) {
+                        final categories = categoryProvider.categories;
+
+                        if (categories.isEmpty) {
+                          return const Center(
+                            child: Text('No categories found'),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButton<String>(
+                              value: _selectedCategory == '' ? categories[0].name : _selectedCategory,
+                              isExpanded: true,
+                              items: categories.map<DropdownMenuItem<String>>((category) {
+                                return DropdownMenuItem<String>(
+                                  value: category.name,
+                                  child: Text(category.name),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                print(value);
+                                _selectedCategory = value!;
+                                setState(() {
+                                  
+                                });
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    );
                   }
-                  return null;
-                },
-              ),
+                }
+              },
+            ),
               SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
